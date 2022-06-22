@@ -1,0 +1,12 @@
+name: Gone
+version: '${project.version}'
+main: me.kelopy.gone.Gone
+authors: [ Kelopy ]
+commands:
+  vanish:
+    description: be gone thot
+    usage: /<command>
+    permission: gone.vanish
+    permission-message: "§cYou don't have permission to execute this command."
+    aliases:
+      - v
