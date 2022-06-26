@@ -10,29 +10,24 @@ import org.bukkit.entity.Player;
 
 public class vanish implements CommandExecutor {
 
-    Gone plugin;
-
-    public vanish(Gone plugin) {
-        this.plugin = plugin;
-    }
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (sender instanceof Player p){
 
-            if(plugin.invisible_list.contains(p)){
-                for (Player people : Bukkit.getOnlinePlayers()){
-                    people.showPlayer(plugin, p);
+            if(args.length == 0){
+                vanishMethod_args0(p);
+            }else if(args.length == 1){
+                if (p.hasPermission("gone.others")){
+                    Player target = Bukkit.getPlayer(args[0]);
+                    if(target != null){
+                        vanishMethod_args1(p, target);
+                    }else{
+                        p.sendMessage(ChatColor.RED + "Player not found.");
+                    }
+                }else{
+                    p.sendMessage("§cYou don't have permission to execute this command.");
                 }
-                plugin.invisible_list.remove(p);
-                p.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("vanish-off")));
-            }else if(!plugin.invisible_list.contains(p)){
-                for (Player people : Bukkit.getOnlinePlayers()){
-                    people.hidePlayer(plugin, p);
-                }
-                plugin.invisible_list.add(p);
-                p.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("vanish-on")));
             }
 
         }else{
@@ -41,4 +36,43 @@ public class vanish implements CommandExecutor {
 
         return true;
     }
+
+    private void vanishMethod_args0(Player p){
+
+        if(Gone.getInstance().invisible_list.contains(p)){
+            for (Player people : Bukkit.getOnlinePlayers()) {
+                people.showPlayer(Gone.getInstance(), p);
+            }
+            Gone.getInstance().invisible_list.remove(p);
+            p.sendMessage(ChatColor.translateAlternateColorCodes('&', Gone.getInstance().getConfig().getString("vanish-off")));
+        }else if(!Gone.getInstance().invisible_list.contains(p)) {
+            for (Player people : Bukkit.getOnlinePlayers()) {
+                people.hidePlayer(Gone.getInstance(), p);
+            }
+            Gone.getInstance().invisible_list.add(p);
+            p.sendMessage(ChatColor.translateAlternateColorCodes('&', Gone.getInstance().getConfig().getString("vanish-on")));
+        }
+
+    }
+
+    private void vanishMethod_args1(Player p, Player target){
+
+        if(Gone.getInstance().invisible_list.contains(p)){
+            for (Player people : Bukkit.getOnlinePlayers()) {
+                people.showPlayer(Gone.getInstance(), p);
+            }
+            Gone.getInstance().invisible_list.remove(p);
+            p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&b" + p.getName() + " &7is now &bvisible&7."));
+            target.sendMessage(ChatColor.translateAlternateColorCodes('&', "&b" + p.getName() + " &7showed you, you're now &bvisible&7."));
+        }else if(!Gone.getInstance().invisible_list.contains(p)) {
+            for (Player people : Bukkit.getOnlinePlayers()) {
+                people.hidePlayer(Gone.getInstance(), p);
+            }
+            Gone.getInstance().invisible_list.add(p);
+            p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&b" + p.getName() + " &7is now &binvisible&7."));
+            target.sendMessage(ChatColor.translateAlternateColorCodes('&', "&b" + p.getName() + " &7hid you, you're now &binvisible&7."));
+        }
+
+    }
+
 }

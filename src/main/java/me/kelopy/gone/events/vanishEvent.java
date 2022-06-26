@@ -8,17 +8,11 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class vanishEvent implements Listener {
 
-    Gone plugin;
-
-    public vanishEvent(Gone plugin) {
-        this.plugin = plugin;
-    }
-
     @EventHandler
     public void onJoin(PlayerJoinEvent event){
         Player player = event.getPlayer();
-        for (int i = 0; i < plugin.invisible_list.size(); i++){
-            player.hidePlayer(plugin, plugin.invisible_list.get(i));
+        for (int i = 0; i < Gone.getInstance().invisible_list.size(); i++){
+            player.hidePlayer(Gone.getInstance(), Gone.getInstance().invisible_list.get(i));
         }
     }
 

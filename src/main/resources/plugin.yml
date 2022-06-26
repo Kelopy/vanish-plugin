@@ -5,8 +5,17 @@ authors: [ Kelopy ]
 commands:
   vanish:
     description: be gone thot
-    usage: /<command>
+    usage: /<command> [player]
     permission: gone.vanish
     permission-message: "§cYou don't have permission to execute this command."
     aliases:
       - v
+  vanishlist:
+    description: debug command
+    usage: /<command>
+    permission: gone.debug
+    permission-message: "§cYou don't have permission to execute this command."
+    aliases:
+      - vanishl
+      - vlist
+      - vl
